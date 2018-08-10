@@ -1,8 +1,12 @@
 <?php
 
 
-class OfflinePayment extends Payment
+namespace IQnection\Payment;
+
+class OfflinePayment extends Payment\Payment
 {
+	private static $table_name = 'OfflinePayment';
+	
 	private static $PaymentMethod = 'Offline Payment';
 		
 	public function Process($arg = array())

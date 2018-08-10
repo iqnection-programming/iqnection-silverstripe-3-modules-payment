@@ -1,6 +1,11 @@
 <?php
 
 
+namespace IQnection\Payment;
+
+use SilverStripe\ORM;
+use SilverStripe\Forms;
+
 /**
  * Example of adding payment fields to checkout form
  $paymentMethod = singleton('PayeezyCreditCardPayment');
@@ -59,8 +64,10 @@ switch($Payment->Status)
 }
 */
 
-class Payment extends DataObject
+class Payment extends ORM\DataObject
 {
+	private static $table_name = 'Payment';
+	
 	private static $PaymentMethod = 'Not Specified';
 	
 	private static $db = array( 
@@ -79,7 +86,8 @@ class Payment extends DataObject
 	
 	public function getCMSFields()
 	{
-		$fields = parent::getCMSFields();		
+		$fields = parent::getCMSFields();
+		$this->extend('updateCMSFields',$fields);		
 		return $fields;
 	}
 	
@@ -93,7 +101,7 @@ class Payment extends DataObject
 	
 	public function setPaidObject($object)
 	{
-		$this->PaidObjectType = $object->ClassName;
+		$this->PaidObjectType = get_class($object);
 		$this->PaidObjectID = $object->ID;
 		$this->write();
 		return $this;
@@ -149,13 +157,14 @@ class Payment extends DataObject
 	
 	public function OnSuccessfulPayment()
 	{
+		$this->extend('updateOnSuccessfulPayment');
 		return $this;
 	}
 	
-	public function canCreate($member = null) { return false; }
-	public function canDelete($member = null) { return true; }
-	public function canEdit($member = null)   { return false; }
-	public function canView($member = null)   { return true; }
+	public function canCreate($member = null,$context=[]) { return false; }
+	public function canDelete($member = null,$context=[]) { return true; }
+	public function canEdit($member = null,$context=[])   { return false; }
+	public function canView($member = null,$context=[])   { return true; }
 	
 	public function Method()
 	{

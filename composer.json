@@ -1,8 +1,9 @@
 {
 	"name": "iqnection-modules/payment",
-	"description": "SilverStripe 3 Base Payment Module",
+	"description": "SilverStripe Base Payment Module",
 	"type": "silverstripe-module",
 	"keywords": ["iqnection","modules"],
+	"license": "MIT",
 	"authors": [
 		{
 			"name": "IQnection",
@@ -10,9 +11,11 @@
 		}
 	],
 	"require": {
-		"silverstripe/framework": ">=3.0"
+		"silverstripe/framework": "^4.1"
 	},
-	"extra": {
-		"installer-name": "iq-payment"
+	"autoload": {
+		"psr-4": {
+			"IQnection\\Payment\\": "app/src/",
+		}
 	}
 }

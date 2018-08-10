@@ -1,4 +1,6 @@
-
-SiteConfig:
+---
+Name: iqpayment
+---
+SilverStripe\SiteConfig\SiteConfig:
   extensions:
-    - Payment_SiteConfig
+    - IQnection\Payment\SiteConfig
