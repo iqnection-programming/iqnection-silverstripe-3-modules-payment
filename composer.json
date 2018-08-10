@@ -15,7 +15,7 @@
 	},
 	"autoload": {
 		"psr-4": {
-			"IQnection\\Payment\\": "app/src/",
+			"IQnection\\Payment\\": "app/src/"
 		}
 	}
 }
