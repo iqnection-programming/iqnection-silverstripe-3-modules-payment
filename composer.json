@@ -1,7 +1,7 @@
 {
 	"name": "iqnection-modules/payment",
 	"description": "SilverStripe Base Payment Module",
-	"type": "silverstripe-module",
+	"type": "silverstripe-vendormodule",
 	"keywords": ["iqnection","modules"],
 	"license": "MIT",
 	"authors": [
