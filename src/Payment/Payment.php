@@ -76,6 +76,10 @@ class Payment extends ORM\DataObject
 		"PaidObjectID" => "Int",
 		"PaidObjectType" => "Varchar(255)"
 	);
+	
+	private static $has_one = [
+		'Page' => \Page::class
+	];
 		
 	private static $summary_fields = array(
 		'Created.NiceUS' => 'Date',

@@ -12,7 +12,7 @@ class SiteConfig extends DataExtension
 		'EnabledPaymentMethods' => 'Text'
 	);
 	
-	public function updateCMSFields(&$fields)
+	public function updateCMSFields(Forms\FieldList $fields)
 	{
 		$paymentMethods = array();
 		foreach(ClassInfo::subclassesFor(Payment\Payment::class) as $paymentClass)

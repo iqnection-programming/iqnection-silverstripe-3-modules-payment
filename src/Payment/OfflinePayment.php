@@ -3,7 +3,7 @@
 
 namespace IQnection\Payment;
 
-class OfflinePayment extends Payment\Payment
+class OfflinePayment extends Payment
 {
 	private static $table_name = 'OfflinePayment';
 	
