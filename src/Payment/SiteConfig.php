@@ -15,13 +15,14 @@ class SiteConfig extends DataExtension
 	public function updateCMSFields(Forms\FieldList $fields)
 	{
 		$paymentMethods = array();
-		foreach(ClassInfo::subclassesFor(Payment\Payment::class) as $paymentClass)
+		foreach(ClassInfo::subclassesFor(Payment::class) as $paymentClass)
 		{
-			if ($paymentClass == Payment\Payment::class) { continue; }
+			if ($paymentClass == Payment::class) { continue; }
 			$paymentName = $paymentClass::Config()->get('PaymentMethod');
 			$paymentMethods[$paymentClass] = Forms\FormField::name_to_label($paymentName);
 		}
-		$fields->addFieldToTab('Root.Payments', Forms\CheckboxSetField('EnabledPaymentMethods','Enable Payment Methods',$paymentMethods) );
+		$fields->addFieldToTab('Root.Payments', Forms\CheckboxSetField::create('EnabledPaymentMethods','Enable Payment Methods')
+			->setSource($paymentMethods) );
 		$fields->addFieldToTab('Root.Payments', Forms\Tabset::create('Methods') );
 	}
 }
