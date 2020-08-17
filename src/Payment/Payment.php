@@ -74,7 +74,8 @@ class Payment extends ORM\DataObject
 		"Amount" => "Currency",
 		"Status" => "Enum('Pending,Failed,Declined,Success','Pending')",
 		"PaidObjectID" => "Int",
-		"PaidObjectType" => "Varchar(255)"
+		"PaidObjectType" => "Varchar(255)",
+		'Log' => 'Text'
 	);
 	
 	private static $has_one = [
@@ -82,7 +83,7 @@ class Payment extends ORM\DataObject
 	];
 		
 	private static $summary_fields = array(
-		'Created.NiceUS' => 'Date',
+		'Created.Nice' => 'Date',
 		'Amount' => 'Price'
 	);
 	
@@ -91,8 +92,21 @@ class Payment extends ORM\DataObject
 	public function getCMSFields()
 	{
 		$fields = parent::getCMSFields();
-		$this->extend('updateCMSFields',$fields);		
+		$fields->removeByName(['LinkTracking','FileTracking','Log']);
+		$fields->addFieldToTab('Root.Log', Forms\LiteralField::create('log-display','<div style="max-width:1000px"><pre><xmp>'.print_r(json_decode($this->Log,1),1).'</xmp></pre></div>') );		
+		$this->extend('updateCMSFields',$fields);
 		return $fields;
+	}
+	
+	public function AddLogEntry($message)
+	{
+		$log = json_decode($this->Log,1);
+		if (!$log)
+		{
+			$log = [];
+		}
+		$log[strtotime('now')][] = $message;
+		$this->Log = json_encode($log);
 	}
 	
 	public function getPaidObject()
