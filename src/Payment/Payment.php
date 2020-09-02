@@ -66,6 +66,11 @@ switch($Payment->Status)
 
 class Payment extends ORM\DataObject
 {
+	const STATUS_PENDING = 'Pending';
+	const STATUS_FAILED = 'Failed';
+	const STATUS_DECLINED = 'Declined';
+	const STATUS_SUCCESS = 'Success';
+	
 	private static $table_name = 'Payment';
 	
 	private static $PaymentMethod = 'Not Specified';
@@ -74,8 +79,7 @@ class Payment extends ORM\DataObject
 		"Amount" => "Currency",
 		"Status" => "Enum('Pending,Failed,Declined,Success','Pending')",
 		"PaidObjectID" => "Int",
-		"PaidObjectType" => "Varchar(255)",
-		'Log' => 'Text'
+		"PaidObjectType" => "Varchar(255)"
 	);
 	
 	private static $has_one = [
@@ -84,7 +88,8 @@ class Payment extends ORM\DataObject
 		
 	private static $summary_fields = array(
 		'Created.Nice' => 'Date',
-		'Amount' => 'Price'
+		'Status' => 'Status',
+		'Amount.Nice' => 'Price'
 	);
 	
 	private static $default_sort = 'Created DESC';
@@ -92,21 +97,12 @@ class Payment extends ORM\DataObject
 	public function getCMSFields()
 	{
 		$fields = parent::getCMSFields();
-		$fields->removeByName(['LinkTracking','FileTracking','Log']);
-		$fields->addFieldToTab('Root.Log', Forms\LiteralField::create('log-display','<div style="max-width:1000px"><pre><xmp>'.print_r(json_decode($this->Log,1),1).'</xmp></pre></div>') );		
 		$this->extend('updateCMSFields',$fields);
-		return $fields;
-	}
-	
-	public function AddLogEntry($message)
-	{
-		$log = json_decode($this->Log,1);
-		if (!$log)
+		if (!$this->Page()->Exists())
 		{
-			$log = [];
+			$fields->removeByName('PageID');
 		}
-		$log[strtotime('now')][] = $message;
-		$this->Log = json_encode($log);
+		return $fields;
 	}
 	
 	public function getPaidObject()
