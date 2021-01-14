@@ -10,7 +10,14 @@ use SilverStripe\Forms;
 class CreditCardPayment extends PaymentModel
 {
 	private static $table_name = 'CreditCardPayment';
-	
+
+    private static $summary_fields = array(
+        'Created.Nice' => 'Date',
+        'TransactionId' => 'Transaction ID',
+        'Status' => 'Status',
+        'Amount.Nice' => 'Price'
+    );
+
 	private static $PaymentMethod = 'Credit Card Payment';
 	
 	private static $payment_processor;
